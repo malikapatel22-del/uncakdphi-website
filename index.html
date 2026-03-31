@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UNC aKDPhi</title>
+  <link rel="icon" type="image/png" href="crest.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* =============================================
+       CSS VARIABLES
+    ============================================= */
+    :root {
+      --lavender:     #CCBDE5;
+      --lavender-lt:  #EDE9F4;
+      --violet:       #B577BC;
+      --violet-dark:  #8A4A90;
+      --white:        #FFFFFF;
+      --ink:          #1C1624;
+      --ink-soft:     #4A3F55;
+      --ink-muted:    #7A6F85;
+      --surface:      #F8F5FD;
+      --border:       rgba(204,189,229,0.35);
+
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'DM Sans', system-ui, sans-serif;
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 28px;
+      --radius-pill: 999px;
+
+      --shadow-card: 0 4px 24px rgba(140,100,180,0.10);
+      --shadow-lift: 0 12px 40px rgba(140,100,180,0.18);
+
+      --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* =============================================
+       TYPOGRAPHY UTILITIES
+    ============================================= */
+    .serif { font-family: var(--serif); }
+    .display {
+      font-family: var(--serif);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+    }
+    .overline {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--violet);
+    }
+    .body-sm { font-size: 0.875rem; line-height: 1.7; color: var(--ink-soft); }
+    .muted { color: var(--ink-muted); }
+
+    /* =============================================
+       LAYOUT UTILITIES
+    ============================================= */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .container--wide { max-width: 1320px; }
+    .section { padding: 96px 0; }
+    .section--sm { padding: 64px 0; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .flex-center { display: flex; align-items: center; justify-content: center; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .gap-12 { gap: 12px; }
+    .gap-16 { gap: 16px; }
+    .gap-24 { gap: 24px; }
+    .gap-32 { gap: 32px; }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: var(--radius-pill);
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--violet);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(181,119,188,0.35);
+    }
+    .btn-primary:hover { background: var(--violet-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(181,119,188,0.40); }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--violet); color: var(--violet); background: rgba(181,119,188,0.06); }
+    .btn-ghost { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.5); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.8); }
+
+    /* =============================================
+       CARDS
+    ============================================= */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+    .card__body { padding: 28px 32px; }
+    .card__body--sm { padding: 20px 24px; }
+
+    /* =============================================
+       SECTION HEADERS
+    ============================================= */
+    .section-header { margin-bottom: 56px; }
+    .section-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.12;
+      margin-top: 10px;
+    }
+    .section-header p {
+      margin-top: 16px;
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      max-width: 540px;
+      line-height: 1.75;
+    }
+    .section-header--center p { margin-left: auto; margin-right: auto; }
+
+    /* =============================================
+       BADGE / TAG
+    ============================================= */
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .badge-lavender { background: var(--lavender-lt); color: var(--violet-dark); }
+    .badge-violet { background: var(--violet); color: var(--white); }
+
+    /* =============================================
+       DIVIDER / ORNAMENT
+    ============================================= */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .ornament span {
+      font-size: 1rem;
+      color: var(--violet);
+    }
+
+    /* =============================================
+       SCROLL FADE-IN ANIMATION
+    ============================================= */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up-delay-1 { transition-delay: 0.1s; }
+    .fade-up-delay-2 { transition-delay: 0.2s; }
+    .fade-up-delay-3 { transition-delay: 0.3s; }
+    .fade-up-delay-4 { transition-delay: 0.4s; }
+    .fade-up-delay-5 { transition-delay: 0.5s; }
+
+    /* =============================================
+       NAVIGATION
+    ============================================= */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+      background: transparent;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(140,100,180,0.06);
+    }
+    .nav__logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .nav__logo-greek {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--violet-dark);
+      letter-spacing: 0.04em;
+    }
+    .nav__logo-sub {
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav__links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      transition: var(--transition);
+    }
+    .nav__links a:hover { color: var(--violet); }
+    .nav__cta { margin-left: 8px; }
+
+    /* Mobile nav */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .nav__mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: var(--white);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      transition: var(--transition);
+    }
+    .nav__mobile a:hover { color: var(--violet); }
+    .nav__mobile-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--lavender-lt);
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(181,119,188,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(204,189,229,0.3) 0%, transparent 60%);
+    }
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      padding: 120px 0 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero__text .overline { margin-bottom: 20px; }
+    .hero__headline {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5.5vw, 5.2rem);
+      font-weight: 300;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+    .hero__headline em {
+      font-style: italic;
+      color: var(--violet);
+    }
+    .hero__sub {
+      font-size: 1.08rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      max-width: 440px;
+      margin-bottom: 40px;
+    }
+    .hero__actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero__visual {
+      position: relative;
+    }
+    .hero__img-main {
+      border-radius: var(--radius-lg);
+      height: 520px;
+      width: 100%;
+      background: linear-gradient(135deg, #D4C4E8 0%, #B577BC22 100%);
+      overflow: hidden;
+      box-shadow: var(--shadow-lift);
+    }
+    .hero__img-main img { height: 100%; object-fit: cover; }
+    .hero__img-float {
+      position: absolute;
+      bottom: -24px;
+      left: -32px;
+      width: 180px;
+      height: 220px;
+      border-radius: var(--radius-md);
+      background: var(--lavender);
+      overflow: hidden;
+      box-shadow: var(--shadow-lift);
+      border: 4px solid var(--white);
+    }
+    .hero__img-float img { height: 100%; }
+    .hero__stats {
+      position: absolute;
+      top: 32px;
+      right: -24px;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      box-shadow: var(--shadow-lift);
+      border: 1px solid var(--border);
+      min-width: 160px;
+    }
+    .hero__stats-num {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--violet);
+      line-height: 1;
+    }
+    .hero__stats-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    /* =============================================
+       PILLARS STRIP
+    ============================================= */
+    .pillars {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0;
+    }
+    .pillars__grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .pillar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 100px;
+    }
+    .pillar-item__icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--lavender-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      transition: var(--transition);
+    }
+    .pillar-item:hover .pillar-item__icon {
+      background: var(--lavender);
+      transform: scale(1.08);
+    }
+    .pillar-item__label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    /* =============================================
+       ABOUT SECTION
+    ============================================= */
+      .about { background: var(--surface); }
+    .about__text { padding-right: 24px; }
+    .about__text h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 2.9rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin: 12px 0 20px;
+    }
+    .about__text p {
+      color: var(--ink-soft);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about__values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .about__value-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+    }
+    .about__value-item::before {
+      content: '◇';
+      color: var(--violet);
+      font-size: 0.75rem;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .about__photo-collage {
+      position: relative;
+    }
+    .about__photo-main {
+      border-radius: var(--radius-lg);
+      height: 480px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #CCBDE5 0%, #B577BC33 100%);
+    }
+    .about__photo-main img { height: 100%; }
+    .about__photo-sm {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 200px;
+      height: 160px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--lavender);
+      border: 4px solid var(--white);
+      box-shadow: var(--shadow-lift);
+    }
+    .about__photo-sm img { height: 100%; }
+    .about__quote {
+      position: absolute;
+      top: 24px;
+      left: -24px;
+      background: var(--violet);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      max-width: 180px;
+      box-shadow: var(--shadow-lift);
+    }
+    .about__quote p {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--white);
+      margin: 0;
+    }
+    .about__quote span {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-top: 8px;
+      display: block;
+    }
+ 
+    /* =============================================
+       RECRUITMENT SECTION
+    ============================================= */
+    .recruitment {
+      background: var(--white);
+    }
+    .rush-banner {
+      background: linear-gradient(135deg, var(--violet) 0%, #9B4FA8 100%);
+      border-radius: var(--radius-lg);
+      padding: 56px 64px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .rush-banner::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .rush-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: 20%;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+    .rush-banner > * { position: relative; z-index: 1; }
+    .rush-banner h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 300;
+      color: var(--white);
+      margin: 8px 0 16px;
+      line-height: 1.15;
+    }
+    .rush-banner p {
+      color: rgba(255,255,255,0.82);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 520px;
+    }
+    .rush-banner__actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; position: relative; z-index: 2; }
+    .rush-banner .overline { color: rgba(255,255,255,0.7); }
+ 
+    /* Rush Steps */
+    .rush-steps { margin-top: 72px; }
+    .rush-steps__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      position: relative;
+    }
+    .rush-steps__grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: var(--border);
+    }
+    .rush-step {
+      text-align: center;
+      padding: 0 16px;
+      position: relative;
+    }
+    .rush-step__num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--lavender-lt);
+      border: 2px solid var(--lavender);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--violet-dark);
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+      background: var(--white);
+    }
+    .rush-step:hover .rush-step__num {
+      background: var(--violet);
+      color: var(--white);
+      border-color: var(--violet);
+    }
+    .rush-step h4 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .rush-step p {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+ 
+    /* FAQ */
+    .faq { margin-top: 72px; }
+    .faq__item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq__question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      transition: var(--transition);
+    }
+    .faq__question:hover { color: var(--violet); }
+    .faq__question-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--violet);
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .faq__item.open .faq__question-icon { background: var(--violet); color: var(--white); transform: rotate(45deg); }
+    .faq__answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+    .faq__item.open .faq__answer {
+      max-height: 300px;
+      padding-bottom: 20px;
+    }
+
+    /* =============================================
+       RECRUITMENT SECTION
+    ============================================= */
+    .recruitment {
+      background: var(--white);
+    }
+    .rush-banner {
+      background: linear-gradient(135deg, var(--violet) 0%, #9B4FA8 100%);
+      border-radius: var(--radius-lg);
+      padding: 56px 64px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .rush-banner::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .rush-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: 20%;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .rush-banner h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 300;
+      color: var(--white);
+      margin: 8px 0 16px;
+      line-height: 1.15;
+    }
+    .rush-banner p {
+      color: rgba(255,255,255,0.82);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 520px;
+    }
+    .rush-banner__actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+    .rush-banner .overline { color: rgba(255,255,255,0.7); }
+
+    /* Rush Steps */
+    .rush-steps { margin-top: 72px; }
+    .rush-steps__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      position: relative;
+    }
+    .rush-steps__grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: var(--border);
+    }
+    .rush-step {
+      text-align: center;
+      padding: 0 16px;
+      position: relative;
+    }
+    .rush-step__num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--lavender-lt);
+      border: 2px solid var(--lavender);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--violet-dark);
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+      background: var(--white);
+    }
+    .rush-step:hover .rush-step__num {
+      background: var(--violet);
+      color: var(--white);
+      border-color: var(--violet);
+    }
+    .rush-step h4 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .rush-step p {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    /* FAQ */
+    .faq { margin-top: 72px; }
+    .faq__item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq__question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      transition: var(--transition);
+    }
+    .faq__question:hover { color: var(--violet); }
+    .faq__question-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--violet);
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .faq__item.open .faq__question-icon { background: var(--violet); color: var(--white); transform: rotate(45deg); }
+    .faq__answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+    .faq__item.open .faq__answer {
+      max-height: 300px;
+      padding-bottom: 20px;
+    }
+
+    /* =============================================
+       PHILANTHROPY SECTION
+    ============================================= */
+    .philanthropy { background: var(--surface); }
+    .philanthropy__hero {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      height: 400px;
+      margin-bottom: 64px;
+      background: linear-gradient(135deg, #D4C4E8, #B577BC44);
+    }
+    .philanthropy__hero img { height: 100%; }
+    .philanthropy__hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(28,22,36,0.7) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: 48px;
+    }
+    .philanthropy__hero-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.2;
+      margin: 8px 0 16px;
+    }
+    .philanthropy__hero-text p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      max-width: 480px;
+    }
+    .impact-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .impact-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+    .impact-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+    .impact-card__num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--violet);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .impact-card__label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+    }
+    .impact-card p {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    /* Event list */
+    .events-list { margin-top: 56px; }
+    .event-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .event-item:hover { padding-left: 8px; }
+    .event-date {
+      text-align: center;
+      background: var(--lavender-lt);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+    }
+    .event-date__month {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--violet);
+      font-weight: 600;
+    }
+    .event-date__day {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .event-item h4 { font-size: 1rem; font-weight: 500; margin-bottom: 4px; }
+    .event-item p { font-size: 0.82rem; color: var(--ink-muted); }
+
+    /* =============================================
+       SISTERHOOD SECTION
+    ============================================= */
+    .sisterhood { background: var(--white); }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .photo-grid__item {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: linear-gradient(135deg, #CCBDE5, #D4C4F0);
+      transition: var(--transition);
+    }
+    .photo-grid__item:hover { transform: scale(1.01); }
+    .photo-grid__item--tall { grid-row: span 2; }
+    .photo-grid__item--wide { grid-column: span 2; }
+    .photo-grid__item img { height: 100%; min-height: 220px; object-fit: cover; }
+    .photo-grid__item--tall img { min-height: 100%; }
+
+    /* Testimonials */
+    .testimonials { margin-top: 72px; }
+    .testimonials__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testimonial-card {
+      background: var(--lavender-lt);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+    .testimonial-card__quote {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+    .testimonial-card__quote::before { content: '\201C'; color: var(--violet); font-size: 1.8rem; line-height: 0; vertical-align: -0.4em; margin-right: 4px; }
+    .testimonial-card__author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-card__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--lavender);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--violet-dark);
+      flex-shrink: 0;
+    }
+    .testimonial-card__name { font-size: 0.875rem; font-weight: 600; }
+    .testimonial-card__role { font-size: 0.75rem; color: var(--ink-muted); }
+
+    /* =============================================
+       LEADERSHIP SECTION
+    ============================================= */
+    .leadership { background: var(--surface); }
+    .leadership-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .leader-card {
+      text-align: center;
+      transition: var(--transition);
+    }
+    .leader-card:hover { transform: translateY(-4px); }
+    .leader-card__photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: linear-gradient(160deg, #CCBDE5 0%, #D8C8EC 100%);
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .leader-card__photo img { height: 100%; }
+    .leader-card__photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(28,22,36,0.4) 0%, transparent 50%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .leader-card:hover .leader-card__photo-overlay { opacity: 1; }
+    .leader-card__name { font-weight: 600; font-size: 0.95rem; }
+    .leader-card__role { font-size: 0.75rem; color: var(--violet); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; font-weight: 500; }
+    .leader-card__major { font-size: 0.75rem; color: var(--ink-muted); margin-top: 2px; }
+
+    /* =============================================
+       ALUMNI SECTION
+    ============================================= */
+    .alumni { background: var(--ink); position: relative; overflow: hidden; }
+    .alumni::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(181,119,188,0.15) 0%, transparent 70%);
+    }
+    .alumni__headline {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+      margin: 12px 0 24px;
+    }
+    .alumni__headline em { color: var(--lavender); font-style: italic; }
+    .alumni__text {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      font-size: 1rem;
+      max-width: 440px;
+      margin-bottom: 36px;
+    }
+    .alumni-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 48px;
+    }
+    .alumni-stat__num {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--lavender);
+      line-height: 1;
+    }
+    .alumni-stat__label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    .alumni__spotlights {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .alumni-spotlight {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(204,189,229,0.15);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      transition: var(--transition);
+    }
+    .alumni-spotlight:hover { background: rgba(204,189,229,0.08); border-color: rgba(204,189,229,0.3); }
+    .alumni-spotlight__name { font-weight: 600; color: var(--white); margin-bottom: 2px; }
+    .alumni-spotlight__class { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lavender); margin-bottom: 10px; }
+    .alumni-spotlight__role { font-size: 0.82rem; color: rgba(255,255,255,0.55); }
+    .alumni-spotlight__quote {
+      font-family: var(--serif);
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(204,189,229,0.12);
+    }
+
+    /* =============================================
+       CONTACT SECTION
+    ============================================= */
+    .contact { background: var(--white); }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact__info h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin: 12px 0 20px;
+    }
+    .contact__info p {
+      color: var(--ink-soft);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+    .contact__socials {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      background: var(--lavender-lt);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      transition: var(--transition);
+    }
+    .social-link:hover { background: var(--lavender); color: var(--violet-dark); }
+    .contact__form { display: flex; flex-direction: column; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .form-control {
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      transition: var(--transition);
+      outline: none;
+      resize: none;
+    }
+    .form-control:focus { border-color: var(--violet); background: var(--white); box-shadow: 0 0 0 3px rgba(181,119,188,0.12); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.6);
+      padding: 64px 0 32px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+    .footer__brand {}
+    .footer__logo-greek {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .footer__logo-sub {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      display: block;
+      margin-bottom: 16px;
+    }
+    .footer__tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--lavender);
+      margin-bottom: 16px;
+    }
+    .footer__brand p { font-size: 0.82rem; line-height: 1.7; max-width: 260px; }
+    .footer__col h4 {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .footer__col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer__col ul a {
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+    .footer__col ul a:hover { color: var(--lavender); }
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    /* =============================================
+       PLACEHOLDER IMAGE (for demo)
+    ============================================= */
+    .placeholder-img {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--lavender-lt) 0%, var(--lavender) 100%);
+      color: var(--violet-dark);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    /* =============================================
+       PAGE SECTIONS (multi-page feel with anchors)
+    ============================================= */
+    .page-section { display: block; }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 1024px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 40px; }
+      .hero__content { grid-template-columns: 1fr; text-align: center; }
+      .hero__sub { max-width: 100%; }
+      .hero__actions { justify-content: center; }
+      .hero__visual { display: none; }
+      .about__photo-quote { display: none; }
+      .leadership-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .alumni { }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 64px 0; }
+      .nav__links, .nav__cta { display: none; }
+      .nav__hamburger { display: flex; }
+      .grid-3, .impact-cards, .testimonials__grid { grid-template-columns: 1fr; }
+      .rush-steps__grid { grid-template-columns: 1fr 1fr; }
+      .rush-steps__grid::before { display: none; }
+      .photo-grid { grid-template-columns: 1fr 1fr; }
+      .photo-grid__item--tall, .photo-grid__item--wide { grid-column: unset; grid-row: unset; }
+      .leadership-grid { grid-template-columns: 1fr 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      .rush-banner { grid-template-columns: 1fr; padding: 40px 32px; }
+      .rush-banner__actions { align-items: flex-start; }
+      .footer__grid { grid-template-columns: 1fr; gap: 28px; }
+      .footer__bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .alumni-stats { flex-wrap: wrap; gap: 24px; }
+      .alumni__spotlights { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .rush-steps__grid { grid-template-columns: 1fr; }
+      .hero__headline { font-size: 2.6rem; }
+      .about__values { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       NAVIGATION
+  ============================================= -->
+  <nav class="nav" id="nav">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1160px;padding:0 24px;">
+      <a href="#home" class="nav__logo">
+        <span class="nav__logo-greek">αΚΔΦ</span>
+        <span class="nav__logo-sub">Associate Chapter at UNC–Chapel Hill</span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <div class="nav__links">
+        <a href="#about">About</a>
+        <a href="#recruitment">Recruitment</a>
+        <a href="#philanthropy">Philanthropy</a>
+        <a href="#sisterhood">Sisterhood</a>
+        <a href="#leadership">Leadership</a>
+        <a href="#alumni">Alumni</a>
+        <a href="#contact" class="btn btn-primary btn-sm nav__cta" style="padding:10px 22px;font-size:0.78rem;">Contact</a>
+      </div>
+
+      <!-- Hamburger for mobile -->
+      <button class="nav__hamburger" onclick="openMobileNav()" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="nav__mobile" id="mobileNav">
+    <button class="nav__mobile-close" onclick="closeMobileNav()">✕</button>
+    <a href="#home" onclick="closeMobileNav()">Home</a>
+    <a href="#about" onclick="closeMobileNav()">About</a>
+    <a href="#recruitment" onclick="closeMobileNav()">Recruitment</a>
+    <a href="#philanthropy" onclick="closeMobileNav()">Philanthropy</a>
+    <a href="#sisterhood" onclick="closeMobileNav()">Sisterhood</a>
+    <a href="#leadership" onclick="closeMobileNav()">Leadership</a>
+    <a href="#alumni" onclick="closeMobileNav()">Alumni</a>
+    <a href="#contact" onclick="closeMobileNav()">Contact</a>
+  </div>
+
+  <main>
+
+    <!-- =============================================
+         HERO SECTION
+    ============================================= -->
+    <section class="hero" id="home">
+      <div class="hero__bg"></div>
+      <div class="container">
+        <div class="hero__content">
+
+          <!-- Left: Text -->
+          <div class="hero__text fade-up">
+            <span class="overline">UNC–Chapel Hill · Associate Chapter · Est. 1996</span>
+            <h1 class="hero__headline">
+              Love. Friendship. <em>Sisterhood.</em>
+            </h1>
+            <p class="hero__sub">
+              alpha Kappa Delta Phi is more than a sorority, it's a community of 
+              Asian-interest women at UNC-Chapel Hill committed to scholarship, 
+              service, leadership, and one another.
+            </p>
+            <div class="hero__actions">
+              <a href="#recruitment" class="btn btn-primary">Join Our Chapter</a>
+              <a href="#about" class="btn btn-outline">Learn More</a>
+            </div>
+          </div>
+
+          <!-- Right: Visual collage -->
+          <div class="hero__visual fade-up fade-up-delay-2">
+            <!-- Floating stat badge -->
+            <div class="hero__stats">
+              <div class="hero__stats-num">5</div>
+              <div class="hero__stats-label">Core Pillars</div>
+            </div>
+            <div class="hero__img-main">
+              <!--Edit:Replace the active house photo every semester-->
+              <img src="IMG/Active House Photo.JPG" style="min-height:520px;font-size:1.1rem;"
+            <!---> Small float photo: replace src with real photo -->
+            <div class="hero__img-float">
+              <!--Edit: Replace this with a new picture of the NM class-->
+              <img src="IMG/AY Class Photo.JPG">Our newest Class</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         PILLARS STRIP
+    ============================================= -->
+    <section class="pillars">
+      <div class="container">
+        <div class="pillars__grid">
+          <div class="pillar-item fade-up">
+            <div class="pillar-item__icon">🤝</div>
+            <span class="pillar-item__label">Sisterhood</span>
+          </div>
+          <div class="pillar-item fade-up fade-up-delay-1">
+            <div class="pillar-item__icon">💜</div>
+            <span class="pillar-item__label">Service</span>
+          </div>
+          <div class="pillar-item fade-up fade-up-delay-2">
+            <div class="pillar-item__icon">📚</div>
+            <span class="pillar-item__label">Scholarship</span>
+          </div>
+          <div class="pillar-item fade-up fade-up-delay-3">
+            <div class="pillar-item__icon">🌸</div>
+            <span class="pillar-item__label">Asian-Awareness</span>
+          </div>
+          <div class="pillar-item fade-up fade-up-delay-4">
+            <div class="pillar-item__icon">⭐</div>
+            <span class="pillar-item__label">Leadership</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         ABOUT SECTION
+    ============================================= -->
+    <section class="about section" id="about">
+      <div class="container">
+        <div class="grid-2">
+
+          <!-- Left: Text -->
+          <div class="about__text fade-up">
+            <span class="overline">Who We Are</span>
+            <h2>A chapter built on<br>intention and <em class="serif" style="color:var(--violet);">care.</em></h2>
+            <p>
+              The UNC-Chapel Hill Associate Chapter of alpha Kappa Delta Phi was founded 
+              by the 7 sisters of the charter class Carol Chen, Joyce Chu, Jenny Hsieh, 
+              Chetali Kuber, Trinh Le, Tina Wu, and Wendy Yang who believed that a sorority
+              could be a space for authentic connection, meaningful impact, and cultural pride.
+            </p>
+            <div class="about__values">
+              <div class="about__value-item">Compassion</div>
+              <div class="about__value-item">Friendship</div>
+              <div class="about__value-item">Integrity</div>
+              <div class="about__value-item">Purpose-Driven</div>
+              <div class="about__value-item">Authenticity</div>
+            </div>
+            <a href="#recruitment" class="btn btn-primary" style="margin-top:36px;">Meet the Chapter</a>
+          </div>
+
+          <!-- Right: Photo collage -->
+          <div class="about__photo-collage fade-up fade-up-delay-2">
+            <!-- Floating quote card -->
+            <div class="about__quote">
+              <p>"aKDPhi gave me a sisterhood that I've never had before."</p>
+              <span>— Malika Gevariya</span>
+            </div>
+            <!-- Main photo: replace with real image -->
+            <div class="about__photo-main">
+              <img src="IMG/Charter Sisters.jpg" alt="Charter Sisters">
+            </div>
+            <!-- Small bottom-right photo -->
+            <div class="about__photo-sm">
+              <img src="IMG/Founding Sisters.png" alt="Founding Sisters">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         RECRUITMENT SECTION
+    ============================================= -->
+    <section class="recruitment section" id="recruitment">
+      <div class="container">
+
+        <!-- Rush banner -->
+        <div class="rush-banner fade-up">
+          <div>
+            <span class="overline" style="color:rgba(255,255,255,0.7);">Fall 2026 Recruitment</span>
+            <!-- Edit rush headline to reflect the correct semester -->
+            <h2>Meet us at recruitment.<br>Your seat at the table awaits.</h2>
+            <p>
+              Recruitment is a time to be your authentic self and find your fit with our chapter.
+              We host a variety of events each semester designed to help you get to know us and for us to get to know you.
+            </p>
+          </div>
+          <div class="rush-banner__actions">
+            <!-- Edit rush interest form link -->
+            <a href="https://forms.gle/tHpxC8rMh7MpnwyM6" class="btn btn-ghost">Express Interest</a>
+          </div>
+        </div>
+
+        <!-- Rush steps -->
+        <div class="rush-steps fade-up">
+          <div class="section-header">
+            <span class="overline">The Process</span>
+            <h2>How to join</h2>
+          </div>
+          <!-- Edit step titles and descriptions below -->
+          <div class="rush-steps__grid">
+            <div class="rush-step fade-up">
+              <div class="rush-step__num">01</div>
+              <h4>Interest Form</h4>
+              <p>Fill out our interest form to let us know you're interested in learning more 
+                about our sorority. This is not a mandatory step, however it will help us get 
+                to know you better.</p>
+            </div>
+            <div class="rush-step fade-up fade-up-delay-1">
+              <div class="rush-step__num">02</div>
+              <h4>Rush Events</h4>
+              <p>Participate in a series of activities designed to help us get to know each other authentically.</p>
+            </div>
+            <div class="rush-step fade-up fade-up-delay-2">
+              <div class="rush-step__num">03</div>
+              <h4>Interest Meeting</h4>
+              <p>Join 1 out of 2 interest meetings to get to know our sisters and learn more about our sorority. 
+                Each semester will have one in person and one virtual.</p>
+            </div>
+            <div class="rush-step fade-up fade-up-delay-3">
+              <div class="rush-step__num">04</div>
+              <h4>Interview</h4>
+              <p>Participate in an interview to discuss your interest in joining and we will answer any questions you may have.
+                Attendance to 2 recruitment events and 1 interest meeting is required to be eligible for an interview.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming events -->
+        <div class="events-list fade-up" style="margin-top:72px;">
+          <div class="section-header">
+            <span class="overline">Events</span>
+            <h2>Upcoming recruitment events</h2>
+          </div>
+          <!-- Edit events below -->
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-date__month">Jan</div>
+              <div class="event-date__day">20</div>
+            </div>
+            <div>
+              <h4>Sweet Dreams Studio</h4>
+              <p>UNC Student Union 2424 · 5:30 PM – 6:30 PM</p>
+            </div>
+            <a href="#contact" class="btn btn-outline" style="white-space:nowrap;">Learn More</a>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-date__month">Jan</div>
+              <div class="event-date__day">21</div>
+            </div>
+            <div>
+              <h4>Angel 101: Info Session #2</h4>
+              <p>Zoom · 6:00 PM – 7:00 PM</p>
+            </div>
+            <a href="#contact" class="btn btn-outline" style="white-space:nowrap;">Learn More</a>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-date__month">Jan</div>
+              <div class="event-date__day">22</div>
+            </div>
+            <div>
+              <h4>Love Notes from Angels</h4>
+              <p>UNC Student Union 2423 · 5:30 PM – 6:30 PM</p>
+            </div>
+            <a href="#contact" class="btn btn-outline" style="white-space:nowrap;">Learn More</a>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq section--sm fade-up" id="faq">
+          <div class="section-header">
+            <span class="overline">FAQ</span>
+            <h2>Your questions, answered</h2>
+          </div>
+          <!-- Edit FAQ items below -->
+          <div class="faq__item">
+            <button class="faq__question" onclick="toggleFaq(this)">
+              What is hazing and do you haze?
+              <span class="faq__question-icon">+</span>
+            </button>
+            <div class="faq__answer">
+              Hazing is any activity expected of someone joining a group that humiliates, degrades,
+              abuses, or endangers them, regardless of the person's willingness to participate. We 
+              have a strict anti-hazing policy and do not condone or tolerate any form of hazing in 
+              our chapter. Our recruitment process is designed to be inclusive, respectful, and focused
+              on building genuine connections.
+            </div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__question" onclick="toggleFaq(this)">
+              Do I need to be Asian to join?
+              <span class="faq__question-icon">+</span>
+            </button>
+            <div class="faq__answer">
+              Not at all. alpha Kappa Delta Phi is an Asian-interest sorority, which means we 
+              celebrate and center Asian cultures and identities, but membership is open to 
+              women of all backgrounds who share our values and vision.
+            </div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__question" onclick="toggleFaq(this)">
+              What is the time commitment?
+              <span class="faq__question-icon">+</span>
+            </button>
+            <div class="faq__answer">
+              Your first semester of membership will be the same time commitment as a 3 credit hour class. 
+              After that, sisters typically commit to whatever they are able to balance alongside their academics
+              and other commitments. We have sisters who are very involved and others who take a lighter approach,
+              both are valid and supported here.
+            </div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__question" onclick="toggleFaq(this)">
+              What are the membership dues?
+              <span class="faq__question-icon">+</span>
+            </button>
+            <div class="faq__answer">
+              Dues vary by semester and cover chapter operations, national fees, and 
+              events. We are committed to making membership accessible and have a 
+              payment plan process available. Reach out to us directly for current amounts.
+            </div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__question" onclick="toggleFaq(this)">
+              What makes aKDPhi different from other sororities?
+              <span class="faq__question-icon">+</span>
+            </button>
+            <div class="faq__answer">
+              We are a chapter that centers cultural identity alongside traditional 
+              sorority values. Our community is intentionally close-knit, academically 
+              supportive, and deeply service-oriented. Sisters often say the relationships 
+              they build here are unlike any other they've found at UNC.
+            </div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__question" onclick="toggleFaq(this)">
+              When is recruitment?
+              <span class="faq__question-icon">+</span>
+            </button>
+            <div class="faq__answer">
+              We hold formal recruitment each semester. Follow our Instagram 
+              @uncakdphi for exact dates and fill out our interest form below to speak one-on-one with one of our sisters.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         PHILANTHROPY SECTION
+    ============================================= -->
+    <section class="philanthropy section" id="philanthropy">
+      <div class="container">
+
+        <!-- Hero image with overlay text -->
+        <div class="philanthropy__hero fade-up">
+          <img src="IMG/Sisters at BCA Dinner.jpg" style="min-height:400px;">Philanthropy / service event photo>
+          <div class="philanthropy__hero-overlay">
+            <div class="philanthropy__hero-text">
+              <span class="overline" style="color:rgba(255,255,255,0.65);">Giving Back</span>
+              <!-- Edit philanthropy focus below -->
+              <h2>We give back to the communities that shaped us.</h2>
+              <p>From food drives to tutoring programs, our chapter shows up with love and friendship.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="fade-up">
+            <span class="overline">Our Cause</span>
+            <h2 class="serif" style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;line-height:1.15;margin:12px 0 20px;">
+              Service is not just what we do, it's who we are.
+            </h2>
+            <!-- Edit philanthropy description below -->
+            <p style="color:var(--ink-soft);line-height:1.8;">
+              Our organization's purpose lies in supporting breast cancer awareness initiatives. 
+              From hosting educational events to fundraising for research, we are dedicated to 
+              making a positive impact in the fight against breast cancer.
+
+            </p>
+            <p style="color:var(--ink-soft);line-height:1.8;margin-top:12px;">
+              We also focus on other causes close to our community: Hayley’s Gift, Swab The World 
+              Stem Cell Drive, and Violence Awareness.
+
+            </p>
+          </div>
+          <!-- Impact stat cards -->
+          <div class="impact-cards" style="grid-template-columns:1fr;gap:16px;" class="fade-up fade-up-delay-2">
+            <!-- Edit impact stats below -->
+            <div class="impact-card fade-up">
+              <div class="impact-card__num">3000+</div>
+              <div class="impact-card__label">Service Hours</div>
+              <p>Logged in our most recent semester across local and national initiatives.</p>
+            </div>
+            <div class="impact-card fade-up fade-up-delay-1">
+              <div class="impact-card__num">$1,100,000+</div>
+              <div class="impact-card__label">Raised for Charity</div>
+              <p>Through fundraisers, events, and international giving campaigns.</p>
+            </div>
+            <div class="impact-card fade-up fade-up-delay-2">
+              <div class="impact-card__num">8+</div>
+              <div class="impact-card__label">Partner Organizations</div>
+              <p>Community partners we work with regularly across the Triangle.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         SISTERHOOD SECTION
+    ============================================= -->
+    <section class="sisterhood section" id="sisterhood">
+      <div class="container">
+
+        <div class="section-header fade-up">
+          <span class="overline">Our Sisterhood</span>
+          <h2>Real connections.<br><em class="serif" style="color:var(--violet);">Genuine moments.</em></h2>
+          <!-- Edit sisterhood description below -->
+          <p>
+            We believe the best sorority experiences aren't perfectly curated — they're 
+            real. Late-night study sessions, spontaneous food runs, performances, and 
+            the quiet moments of being truly known by your sisters.
+          </p>
+        </div>
+
+        <!-- Photo grid: replace placeholder divs with <img> tags and real photos -->
+        <div class="photo-grid fade-up">
+          <div class="photo-grid__item photo-grid__item--tall">
+            <img src="IMG/unicorn fam.jpg" style="min-height:460px;" alt="Sisters at formal">
+          </div>
+          <div class="photo-grid__item">
+            <img src="IMG/sisters at the unc duke game.JPG" style="min-height:220px;" alt="Sisters at formal">
+          </div>
+          <div class="photo-grid__item">
+            <img src="IMG/sisters trio.JPG" style="min-height:220px;" alt="Sisters at formal">
+          </div>
+          <div class="photo-grid__item photo-grid__item--wide">
+            <img src="IMG/sisters at breakaway.jpg" style="min-height:220px;" alt="Sisters at formal">
+          </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="testimonials fade-up">
+          <div class="section-header" style="margin-top:72px;margin-bottom:40px;">
+            <span class="overline">Sister Stories</span>
+            <h2>In their own words</h2>
+          </div>
+          <!-- Edit testimonials below -->
+          <div class="testimonials__grid">
+            <div class="testimonial-card fade-up">
+              <p class="testimonial-card__quote">
+                aKDPhi’s sisterhood to me means having a supportive group of women who uplift each other through every stage of life, with genuine connections and people I can rely on through both the good and the bad.
+              </p>
+              <div class="testimonial-card__author">
+                <div class="testimonial-card__avatar">H</div>
+                <div>
+                  <div class="testimonial-card__name">Helen L.</div>
+                  <!-- Edit class year and major -->
+                  <div class="testimonial-card__role">Class of 2027 · Neuroscience</div>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card fade-up fade-up-delay-1">
+              <p class="testimonial-card__quote">
+                alpha Kappa Delta Phi's sisterhood to me is multiple things like study dates, fun trips, late night talks, sweet treat runs, and always having someone to turn to for help. Our diverse sisterhood is brought together by love.
+              </p>
+              <div class="testimonial-card__author">
+                <div class="testimonial-card__avatar">K</div>
+                <div>
+                  <div class="testimonial-card__name">Keerthana M.</div>
+                  <div class="testimonial-card__role">Class of 2026 · Statistics & Analytics</div>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card fade-up fade-up-delay-2">
+              <p class="testimonial-card__quote">
+                aKDPhi gave me a sisterhood that I didn’t even know existed. I’ve connected with sisters on things that I’ve never connected with others on, and I’ll never take for granted the support I’ve gotten from sisters in my times of need.
+              </p>
+              <div class="testimonial-card__author">
+                <div class="testimonial-card__avatar">K</div>
+                <div>
+                  <div class="testimonial-card__name">Kayla N.</div>
+                  <div class="testimonial-card__role">Class of 2026 · Public Policy</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         LEADERSHIP SECTION
+    ============================================= -->
+    <section class="leadership section" id="leadership">
+<div class="container">
+
+  <div class="section-header text-center fade-up">
+    <span class="overline">Executive Board</span>
+    <h2>Meet our leadership</h2>
+    <p style="text-align: center; max-width: 700px; margin: 0 auto;">
+      Our exec board is a team of dedicated women who show up for their sisters 
+      every single day.
+    </p>
+  </div>
+<!--Edit this information with the new executive board information-->
+  <!-- Row 1 -->
+  <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: nowrap; margin-bottom: 24px;">
+    
+    <div class="leader-card fade-up" style="width: 300px;">
+      <div class="leader-card__photo">
+        <img src="IMG/kk.JPG" alt="Keerthana Mariappan">
+        <div class="leader-card__photo-overlay"></div>
+      </div>
+      <div class="leader-card__name">Keerthana Mariappan</div>
+      <div class="leader-card__role">President</div>
+      <div class="leader-card__major">#185 *V♡lentinė*</div>
+    </div>
+
+    <div class="leader-card fade-up fade-up-delay-1" style="width: 300px;">
+      <div class="leader-card__photo">
+        <img src="IMG/sarina.JPG" alt="Sarina Chiu">
+        <div class="leader-card__photo-overlay"></div>
+      </div>
+      <div class="leader-card__name">Sarina Chiu</div>
+      <div class="leader-card__role">VP-Internal</div>
+      <div class="leader-card__major">#198 *seREnity*</div>
+    </div>
+
+    <div class="leader-card fade-up fade-up-delay-2" style="width: 300px;">
+      <div class="leader-card__photo">
+        <img src="IMG/michelle.JPG" alt="Michelle Tan">
+        <div class="leader-card__photo-overlay"></div>
+      </div>
+      <div class="leader-card__name">Michelle Tan</div>
+      <div class="leader-card__role">VP-External</div>
+      <div class="leader-card__major">#196 *ÂNA$TASĪA*</div>
+    </div>
+
+  </div>
+
+  <!-- Row 2 -->
+  <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: nowrap;">
+    
+    <div class="leader-card fade-up fade-up-delay-3" style="width: 300px;">
+      <div class="leader-card__photo">
+        <img src="IMG/sophia.JPEG" alt="Sophia Shin">
+        <div class="leader-card__photo-overlay"></div>
+      </div>
+      <div class="leader-card__name">Sophia Shin</div>
+      <div class="leader-card__role">Treasurer</div>
+      <div class="leader-card__major">#201 *solaīrє*</div>
+    </div>
+
+    <div class="leader-card fade-up fade-up-delay-3" style="width: 300px;">
+      <div class="leader-card__photo">
+        <img src="IMG/maria.JPEG" alt="Maria Chao">
+        <div class="leader-card__photo-overlay"></div>
+      </div>
+      <div class="leader-card__name">Maria Chao</div>
+      <div class="leader-card__role">Treasurer</div>
+      <div class="leader-card__major">#197 *Callïsta*</div>
+    </div>
+
+    <div class="leader-card fade-up" style="width: 300px;">
+      <div class="leader-card__photo">
+        <img src="IMG/zoe.JPEG" alt="Zoe Tang">
+        <div class="leader-card__photo-overlay"></div>
+      </div>
+      <div class="leader-card__name">Zoe Tang</div>
+      <div class="leader-card__role">Secretary</div>
+      <div class="leader-card__major">#202 *koköro*</div>
+    </div>
+
+  </div>
+
+</div>
+    </section>
+
+    <!-- =============================================
+         ALUMNI SECTION
+    ============================================= -->
+    <section class="alumni section" id="alumni">
+      <div class="container">
+        <div class="grid-2">
+
+          <!-- Left: Text + stats -->
+          <div class="fade-up">
+            <span class="overline" style="color:var(--lavender);">Legacy & Alumni</span>
+            <h2 class="alumni__headline">
+              Sisters for life.<br>
+              <em>Beyond Chapel Hill.</em>
+            </h2>
+            <!-- Edit alumni body copy below -->
+            <p class="alumni__text">
+              The bonds formed in aKDPhi don't end at graduation. Our alumnae carry 
+              the values of our chapter into careers, communities, and families 
+              across the country — and they remain a vital part of who we are.
+            </p>
+            <a href="#contact" class="btn btn-ghost" style="border-color:var(--lavender);color:var(--lavender);">Connect as an Alum</a>
+
+            <!-- Edit alumni stats below -->
+            <div class="alumni-stats" style="margin-top:48px;display:flex;gap:48px;flex-wrap:wrap;">
+              <div>
+                <div class="alumni-stat__num">150+</div>
+                <div class="alumni-stat__label">Active Alumnae</div>
+              </div>
+              <div>
+                <div class="alumni-stat__num">20+</div>
+                <div class="alumni-stat__label">Industries Represented</div>
+              </div>
+              <div>
+                <div class="alumni-stat__num">14</div>
+                <div class="alumni-stat__label">States Nationwide</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Alumni spotlights. Edit names, class years, roles, quotes below. -->
+          <div class="alumni__spotlights fade-up fade-up-delay-2">
+
+            <div class="alumni-spotlight">
+              <div class="alumni-spotlight__name">#117 Thu *Starseeker* Neang</div>
+              <div class="alumni-spotlight__class">Fall 2017</div>
+              <div class="alumni-spotlight__role">Teacher, NC</div>
+              <p class="alumni-spotlight__quote">
+                "The core values of aKDPhi encouraged me to hone in on my own values - to be courageous, embrace adaptability, and share knowledge."
+              </p>
+            </div>
+
+            <div class="alumni-spotlight">
+              <div class="alumni-spotlight__name">#159 Maddy *koi no yokan* Chen</div>
+              <div class="alumni-spotlight__class">Fall 2021</div>
+              <div class="alumni-spotlight__role">Marketing & Sales, IL</div>
+              <p class="alumni-spotlight__quote">
+                "aKDPhi gave me an amazing community - my line sisters and my family have provided so much support throughout college and as I continue post-grad."
+              </p>
+            </div>
+
+            <div class="alumni-spotlight">
+              <div class="alumni-spotlight__name">#176 Kenzie *Calamansï* Vandyke</div>
+              <div class="alumni-spotlight__class">Fall 2022</div>
+              <div class="alumni-spotlight__role">Financial Services Professional, SC</div>
+              <p class="alumni-spotlight__quote">
+                "aKDPhi gave me a network and a foundation I've relied on every single day since graduating"
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         CONTACT SECTION
+    ============================================= -->
+    <section class="contact section" id="contact">
+      <div class="container">
+        <div class="contact-wrap">
+
+          <!-- Left: info -->
+          <div class="fade-up">
+            <span class="overline">Get In Touch</span>
+            <h2 class="contact__info h2" style="font-family:var(--serif);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.15;margin:12px 0 20px;">
+              We'd love to<br>hear from you.
+            </h2>
+            <p style="color:var(--ink-soft);line-height:1.8;">
+              Whether you're interested in rushing, want to collaborate on a service 
+              project, are an alum looking to reconnect, or just want to learn more 
+              — reach out. We respond to every message.
+            </p>
+            <!-- Edit email address below -->
+            <a href="mailto:akdphiuncpresident@gmail.com" style="color:var(--violet);font-weight:500;font-size:0.95rem;">akdphiuncpresident@gmail.com</a>
+
+            <!-- Edit social links below -->
+            <div class="contact__socials">
+              <a href="https://instagram.com/uncakdphi/" target="_blank" class="social-link">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                Instagram
+              </a>
+              <a href="https://www.facebook.com/akdphiunc/" target="_blank" class="social-link">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Facebook
+              </a>
+              <a href="https://www.linkedin.com/in/keerthana-mariappan/" target="_blank" class="social-link">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Contact form -->
+          <div class="fade-up fade-up-delay-2">
+            <form class="contact__form" onsubmit="handleFormSubmit(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" class="form-control" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                  <label for="year">Class Year</label>
+                  <input type="text" id="year" class="form-control" placeholder="e.g. 2027">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="reason">I'm reaching out as a…</label>
+                <select id="reason" class="form-control">
+                  <option value="">Select one</option>
+                  <option value="prospective">Prospective member</option>
+                  <option value="alumni">Alumna</option>
+                  <option value="organization">Organization / partner</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" class="form-control" rows="5" placeholder="Tell us a little about yourself or what you're looking for…" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                Send Message →
+              </button>
+              <div id="form-success" style="display:none;color:var(--violet);font-size:0.875rem;text-align:center;padding:12px;background:var(--lavender-lt);border-radius:var(--radius-sm);">
+                ✓ Message sent! We'll be in touch soon.
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+
+        <!-- Brand column -->
+        <div class="footer__brand">
+          <span class="footer__logo-greek">αΚΔΦ</span>
+          <span class="footer__logo-sub">UNC–Chapel Hill · Associate Chapter</span>
+          <p class="footer__tagline">Where purpose meets sisterhood.</p>
+          <!-- Edit footer blurb below -->
+          <p>An Asian-interest sorority at the University of North Carolina at Chapel Hill, committed to sisterhood, service, scholarship, Asian awareness, and leadership.</p>
+        </div>
+
+        <!-- Navigation column -->
+        <div class="footer__col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#recruitment">Recruitment</a></li>
+            <li><a href="#philanthropy">Philanthropy</a></li>
+            <li><a href="#sisterhood">Sisterhood</a></li>
+          </ul>
+        </div>
+
+        <!-- More pages -->
+        <div class="footer__col">
+          <h4>Chapter</h4>
+          <ul>
+            <li><a href="#leadership">Leadership</a></li>
+            <li><a href="#alumni">Alumni</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://akdphi.org" target="_blank">National aKDPhi ↗</a></li>
+          </ul>
+        </div>
+
+        <!-- Social / contact column -->
+        <div class="footer__col">
+          <h4>Connect</h4>
+          <ul>
+            <!-- Edit social handles below -->
+            <li><a href="https://instagram.com/uncakdphi/" target="_blank">Instagram</a></li>
+            <li><a href="https://www.facebook.com/akdphiunc/" target="_blank">Facebook</a></li>
+            <li><a href="https://www.linkedin.com/in/keerthana-mariappan/" target="_blank">LinkedIn</a></li>
+            <li><a href="mailto:akdphiuncpresident@gmail.com">Email Us</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <!-- Edit copyright year/chapter name below -->
+        <span>© 2026 alpha Kappa Delta Phi — UNC-Chapel Hill Associate Chapter</span>
+        <span style="color:rgba(255,255,255,0.3);">Made with 💜 #173 Malika *inDHIstructãblė* Gevariya</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       JAVASCRIPT: Nav scroll, FAQ, Fade-in, Form
+  ============================================= -->
+  <script>
+    // --- Nav: add .scrolled class on scroll ---
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // --- Mobile nav open/close ---
+    function openMobileNav() {
+      document.getElementById('mobileNav').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // --- FAQ accordion ---
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq__item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq__item').forEach(i => i.classList.remove('open'));
+      // Open clicked (if wasn't open)
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // --- Scroll-triggered fade-up animations ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // --- Contact form: demo submit handler ---
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form-success').style.display = 'block';
+      e.target.reset();
+      // TODO: Replace with your real form submission logic (e.g. Netlify Forms, Formspree, etc.)
+    }
+  </script>
+
+</body>
+</html>
